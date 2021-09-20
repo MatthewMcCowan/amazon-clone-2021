@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { store } from "../app/store";
 import Head from "next/head";
 import "../styles/globals.css";
+import { Provider as AuthProvider } from "next-auth/client";
 
 const MyApp = ({ Component, pageProps }) => {
   return (
@@ -13,9 +14,11 @@ const MyApp = ({ Component, pageProps }) => {
           rel="stylesheet"
         />
       </Head>
-      <Provider store={store}>
-        <Component {...pageProps} />
-      </Provider>
+      <AuthProvider session={pageProps.session}>
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
+      </AuthProvider>
     </>
   );
 };

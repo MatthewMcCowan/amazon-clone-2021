@@ -5,13 +5,21 @@ import {
   ShoppingCartIcon,
   ChevronDownIcon,
 } from "@heroicons/react/outline";
+import { signIn, signOut, useSession } from "next-auth/client";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { selectItems } from "../slices/basketSlice";
 
 const Header = () => {
+  const [session, loading] = useSession();
+  const router = useRouter();
+  const items = useSelector(selectItems);
   return (
     <header>
       <section className="flex items-center justify-between p-2 bg-amazon_blue">
         <div className="flex mt-2 ">
           <Image
+            onClick={() => router.push("/")}
             src="https://links.papareact.com/f90"
             width={150}
             height={40}
@@ -54,19 +62,27 @@ const Header = () => {
         </div>
         {/* Right Section */}
         <div className="text-white flex justify-center mx-6 space-x-6 whitespace-nowrap">
-          <div className="hover:cursor-pointer border border-amazon_blue hover:border-white p-2">
-            <p className="text-xs font-semibold">Hello, Matthew</p>
+          <div
+            onClick={() => (!session ? signIn() : signOut())}
+            className="hover:cursor-pointer border border-amazon_blue hover:border-white p-2"
+          >
+            <p className="text-xs font-semibold">
+              {!session ? "Please Login" : `Hello ${session.user.name}`}
+            </p>
             <p className="text-sm font-bold -mt-1">Account & Lists</p>
           </div>
           <div className="hover:cursor-pointer border border-amazon_blue hover:border-white p-2">
             <p className="text-xs font-semibold">Returns</p>
             <p className="text-sm font-bold -mt-1">& Orders</p>
           </div>
-          <div className="flex items-center relative border border-amazon_blue hover:border-white p-2">
+          <div
+            onClick={() => router.push("/checkout")}
+            className="flex items-center relative border border-amazon_blue hover:border-white p-2 cursor-pointer"
+          >
             <ShoppingCartIcon className="h-10" />
             <p className="font-bold hidden md:inline">Cart</p>
             <p className="absolute top-1 right-9 h-6 w-6 text-center text-black bg-yellow-200 rounded-full font-extrabold">
-              0
+              {items.length}
             </p>
           </div>
         </div>
