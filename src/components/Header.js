@@ -71,7 +71,10 @@ const Header = () => {
             </p>
             <p className="text-sm font-bold -mt-1">Account & Lists</p>
           </div>
-          <div className="hover:cursor-pointer border border-amazon_blue hover:border-white p-2">
+          <div
+            onClick={() => session && router.push("/orders")}
+            className="hover:cursor-pointer border border-amazon_blue hover:border-white p-2"
+          >
             <p className="text-xs font-semibold">Returns</p>
             <p className="text-sm font-bold -mt-1">& Orders</p>
           </div>
